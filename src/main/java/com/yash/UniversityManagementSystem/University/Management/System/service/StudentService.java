@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +23,10 @@ public class StudentService {
 
     public Student createNewStudent(Student student){
         return studentRepository.save(student);
+    }
+
+    public List<Student> getAllStudents(){
+        return studentRepository.findAll();
     }
 
     public Student getStudentById(Long id){
@@ -54,4 +60,5 @@ public class StudentService {
         Course course = courseRepository.findById(courseId).orElseThrow();
         student.enrollInCourse(course);
     }
+
 }

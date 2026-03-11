@@ -22,4 +22,9 @@ public class CourseService {
         courseRepository.delete(course);
     }
 
+    @Transactional
+    public Course getCourseById(Long id){
+        return courseRepository.findById(id).orElseThrow();
+    }
+
 }
