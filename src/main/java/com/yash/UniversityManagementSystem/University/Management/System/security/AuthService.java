@@ -7,6 +7,8 @@ import com.yash.UniversityManagementSystem.University.Management.System.dto.User
 import com.yash.UniversityManagementSystem.University.Management.System.entity.User;
 import com.yash.UniversityManagementSystem.University.Management.System.enums.UserRoleEnum;
 import com.yash.UniversityManagementSystem.University.Management.System.repositories.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class AuthService {
     private final AuthUtil authUtil;
 
     public UserResponseDto signup(SignupDto signupDto){
-        UserDetails userDetails = userRepository.findByUsername(signupDto.getUsername());
+        User userDetails = userRepository.findByUsername(signupDto.getUsername()).orElseThrow();
         if(userDetails != null){
             throw new IllegalArgumentException("User already present please Login");
         }
@@ -45,7 +47,7 @@ public class AuthService {
     }
 
     public LoginResponseDto login(LoginRequestDto loginDto){
-        UserDetails user = userRepository.findByUsername(loginDto.getUsername());
+        User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow();
 
         if(user == null){
             throw new IllegalArgumentException("User not found signup first");
@@ -58,4 +60,5 @@ public class AuthService {
 
         return new LoginResponseDto(authUser.getId(), token);
     }
+
 }
